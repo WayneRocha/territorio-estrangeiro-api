@@ -11,15 +11,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const body: Printable = req.body;
+  const body: Printable[] = req.body;
 
-  if (!isAPrintable(body)) {
-    res.status(301).json({"error": "invalid Payload"});
-    return;
+  const finalImages: string[] = [];
+
+  for (const printable of body) {
+    if (!isAPrintable(printable)) {
+      res.status(301).json({"error": "invalid Payload"});
+      return;
+    }
+
+    //edit image
+
+    if (printable.map) {
+      finalImages.push(printable.map);
+    }
   }
-  
-  if (body.map) {
-    res.status(200).send(downloadAndZipImages([body.map]));
+
+  if (finalImages) {
+    res.status(200).send(await downloadAndZipImages(finalImages));
     return;
   }
 
@@ -56,7 +66,8 @@ export const downloadAndZipImages = async(imageUrls: string[]): Promise<string |
     images.forEach((image) => {
       zip.addLocalFile(image.path);
     });
-    const zipPath = `public/territories-${(new Date()).getTime()}.zip`;
+    const fileName = `territories-${(new Date()).getTime()}.zip`;
+    const zipPath = `public/${fileName}`;
     zip.writeZip(zipPath);
   
     // Clean up
@@ -64,8 +75,7 @@ export const downloadAndZipImages = async(imageUrls: string[]): Promise<string |
       fs.unlinkSync(image.path);
     });
 
-    return zipPath;
-    
+    return fileName;
   } catch (error) {
     console.error(error);
   }
