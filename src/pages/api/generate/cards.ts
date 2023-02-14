@@ -7,35 +7,6 @@ const AdmZip = require('adm-zip');
 const fs = require('fs');
 const crypto = require('crypto');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const body: Printable[] = req.body;
-
-  const finalImages: string[] = [];
-
-  for (const printable of body) {
-    if (!isAPrintable(printable)) {
-      res.status(301).json({"error": "invalid Payload"});
-      return;
-    }
-
-    //edit image
-
-    if (printable.map) {
-      finalImages.push(printable.map);
-    }
-  }
-
-  if (finalImages) {
-    res.status(200).send(await downloadAndZipImages(finalImages));
-    return;
-  }
-
-  res.end();
-}
-
 export const downloadAndZipImages = async(imageUrls: string[]): Promise<string | undefined> => {
   const images: {name: string, path: string}[] = [];
 
@@ -81,6 +52,39 @@ export const downloadAndZipImages = async(imageUrls: string[]): Promise<string |
   }
 
 };
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const body: Printable[] = req.body;
+  
+    const finalImages: string[] = [];
+  
+    for (const printable of body) {
+      if (!isAPrintable(printable)) {
+        res.status(301).json({"error": "invalid Payload"});
+        return;
+      }
+  
+      //edit image
+  
+      if (printable.map) {
+        finalImages.push(printable.map);
+      }
+    }
+  
+    if (finalImages) {
+      res.status(200).send(await downloadAndZipImages(finalImages));
+      return;
+    }
+  
+    res.end();
+  } catch (error) {
+    res.status(200).json({error: error});
+  }
+}
 
 function isAPrintable(obj: any): obj is Printable {
   return [
