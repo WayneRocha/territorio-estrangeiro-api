@@ -1,10 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, initializeFirestore } from "firebase/firestore";
-import { 
-  browserLocalPersistence,
-  inMemoryPersistence,
-  indexedDBLocalPersistence,
-} from 'firebase/auth';
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_APIKEY,
@@ -19,8 +15,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 //@ts-ignore
+const storage = getStorage(app, process.env.FIREBASE_BUCKET_URL);
 const firestore = getFirestore(app);
 
 export {
-  firestore
+  firestore,
+  storage
 };
