@@ -69,12 +69,9 @@ export default async function handler(
 ) {
 
     try {
+        const response = await axios.get("https://www.adobe.com/express/feature/image/media_16ad2258cac6171d66942b13b8cd4839f0b6be6f3.png?width=750&format=png&optimize=medium", { responseType: 'stream' });
 
-        const b = await zipImages([
-            {url: "https://www.adobe.com/express/feature/image/media_16ad2258cac6171d66942b13b8cd4839f0b6be6f3.png?width=750&format=png&optimize=medium", name: "arquivo", imageExtension: "png"}
-        ]);
-
-        res.send(b);
+        res.send(response);
         res.end();
 
     } catch (error) {
