@@ -12,9 +12,6 @@ export default async function handler(
 ) {
 
     try {
-        if (crypto) {
-            res.status(200).send("|crypto");
-        }
         if (!!axios) {
             res.status(200).send("|axios");
         }
@@ -28,6 +25,7 @@ export default async function handler(
 
     } finally {
         res.end();
+        return;
     }
 
 }
