@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  resolve: {
-    mainFields: ["browser", "main"]
-  },
+  reactStrictMode: true
 }
 
 module.exports = nextConfig
