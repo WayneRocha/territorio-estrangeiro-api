@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from 'axios';
-import * as crypto from "crypto";
-import * as fs from 'fs'; //when debug
+// import * as crypto from "crypto";
+// import * as fs from 'fs'; //when debug
 import { ref, uploadBytesResumable, getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
 import { storage } from '@/firestore/firebase';
 
