@@ -126,10 +126,12 @@ export default async function handler(
       res.end();
 
     }
-  
+
   } catch (error) {
     await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {body: error + ""});
     res.status(200).json({error: error});
+  } finally {
+    res.end();
   }
 }
 
