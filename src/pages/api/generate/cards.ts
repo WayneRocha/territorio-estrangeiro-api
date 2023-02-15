@@ -3,13 +3,13 @@ import { Printable } from '@/root/types';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios';
 import * as crypto from "crypto";
-import * as fs from 'fs';
+// import * as fs from 'fs'; //when debug
 import { ref, uploadBytesResumable, getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
 import { storage } from '@/firestore/firebase';
 
-const AdmZip = require('adm-zip');
-
 export const zipImages = async(imageUrls: {name?: string, url: string, imageExtension: string}[]): Promise<Buffer | null> => {
+  const AdmZip = require('adm-zip');
+
   const images: {name: string, data: Buffer}[] = [];
 
   await Promise.all(imageUrls.map((imageUrl) => {
@@ -84,7 +84,7 @@ export default async function handler(
       }
     }
   
-    if (finalImages) {
+    if (finalImages.length > 0) {
 
       const zipWithPhotos = await zipImages(finalImages.map(img => ({name: img.name, url: img.imageUrl, imageExtension: "png"})));
       
