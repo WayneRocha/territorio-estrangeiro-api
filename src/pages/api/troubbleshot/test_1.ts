@@ -18,9 +18,6 @@ export default async function handler(
         if (!!axios) {
             res.status(200).send("|axios");
         }
-        if (fs) {
-            res.status(200).send("|crypto");
-        }
         if (!!ref && !!uploadBytesResumable && !!getDownloadURL && storage) {
             res.status(200).send("|firebase");
         }
