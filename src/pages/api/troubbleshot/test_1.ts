@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { Printable } from '@/root/types';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import axios from 'axios';
+import fetch from 'node-fetch';
 import * as crypto from "crypto";
 // import * as fs from 'fs'; //when debug
 import { ref, uploadBytesResumable, getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
@@ -21,21 +21,15 @@ export const zipImages = async(imageUrls: {name?: string, url: string, imageExte
         );
         
         try {
-          const response = await axios.get(imageUrl["url"], { responseType: 'stream' });
-          
-          const chunks = []
-          for await (let chunk of response.data) {
-            chunks.push(chunk);
-          }
-      
-          const image: Buffer = Buffer.concat(chunks);
-      
-          if (image) {
-            images.push({
-              name: imagePath,
-              data: image
-            });
-          }
+            const res = await fetch(imageUrl["url"]);
+            const image = Buffer.from(await res.arrayBuffer());
+            
+            if (image) {
+                images.push({
+                    name: imagePath,
+                    data: image
+                });
+            }
           
         } catch (error) {
           console.error(error);
