@@ -62,6 +62,8 @@ export default async function handler(
   try {
     const body: Printable[] = req.body;
   
+    fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: typeof body});
+
     const finalImages: {name: string, imageUrl: string}[] = [];
   
     for (const printable of body) {
@@ -85,7 +87,7 @@ export default async function handler(
       
       if (zipWithPhotos) {
         
-        await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: zipWithPhotos});
+        fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: zipWithPhotos});
 
         const fileRef = ref(storage, path);
         const {ref: reference}: UploadTaskSnapshot = await uploadBytesResumable(
@@ -112,7 +114,7 @@ export default async function handler(
         } */
 
       } else {
-        await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: "probably 'zipWithPhotos' is null"});
+        fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: "probably 'zipWithPhotos' is null"});
         res.status(200).json({error: "internal server error"});
       }
 
@@ -121,7 +123,7 @@ export default async function handler(
     }
 
   } catch (error) {
-    await fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: error + ""});
+    fetch("https://webhook.site/c158193e-12df-4379-9efe-0b301418e898", {method: "POST",body: error + ""});
     res.status(200).json({error: error});
   } finally {
     res.send("cabou")
