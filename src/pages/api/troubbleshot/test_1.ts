@@ -69,9 +69,10 @@ export default async function handler(
 ) {
 
     try {
-        const response = await axios.get("https://www.adobe.com/express/feature/image/media_16ad2258cac6171d66942b13b8cd4839f0b6be6f3.png?width=750&format=png&optimize=medium", { responseType: 'stream' });
+        const response = await fetch("https://www.adobe.com/express/feature/image/media_16ad2258cac6171d66942b13b8cd4839f0b6be6f3.png?width=750&format=png&optimize=medium");
+        const b = await response.arrayBuffer();
 
-        res.send(response);
+        res.send(Buffer.from(b));
         res.end();
 
     } catch (error) {
